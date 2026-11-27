@@ -108,13 +108,14 @@ The launcher applies and verifies the compatibility settings required by UU Remo
 - a 64-bit Wine prefix configured as Windows 10;
 - Microsoft Edge WebView2 Runtime from the bundled upstream installer;
 - a Windows 8 application override limited to `msedgewebview2.exe`;
-- a package-built native `wevtapi.dll` compatibility layer that makes unsupported Windows Event Log queries fail cleanly instead of entering Wine's unimplemented `EvtOpenPublisherMetadata` stub;
+- a package-built native `wevtapi.dll` compatibility layer installed in `C:\windows\system32\wevtapi.dll` so unsupported Windows Event Log queries fail cleanly instead of entering Wine's unimplemented `EvtOpenPublisherMetadata` stub, and so UU Remote self-updates that replace `bin/` do not remove the shim;
 - removal of any stale `UseTakeFocus=N` X11 driver override written by earlier releases; Wine must negotiate focus with the window manager (`WM_TAKE_FOCUS`), because the direct X focus path makes UU Remote's main and session windows fight over focus at high frequency after the screen blanks and wakes;
 - `GameViewerService` explicitly started and verified as `RUNNING`;
-- `GameViewerHealthd.exe` started in the interactive Wine session to supervise the server;
+- `GameViewerHealthd.exe` started in the interactive Wine session with its working directory outside `bin/` so Wine does not hold `bin/` open during self-updates;
 - `GameViewerServer.exe` started after the supervisor and before `GameViewer.exe`;
 - Wine menu generation disabled so the upstream installer cannot replace the packaged desktop and URI entries;
-- a prefix-local Windows Desktop directory so the installer cannot write shortcuts into the host desktop.
+- a prefix-local Windows Desktop directory so the installer cannot write shortcuts into the host desktop;
+- host proxy environment variables (`http_proxy`, `HTTP_PROXY`, `https_proxy`, `HTTPS_PROXY`, `all_proxy`, `ALL_PROXY`) cleared before launching UU Remote so Wine's `winhttp` does not route `Upgrade.exe`'s local `127.0.0.1` `aria2c` RPC traffic through a host proxy (host proxy variables remain available during initial WebView2 setup, and UU Remote has its own in-app proxy settings);
 - resident background session: the launcher leaves `GameViewerService`, `GameViewerHealthd.exe`, `GameViewerServer.exe`, and WebView2 running after the client UI exits, so closing or losing the main window never ends this machine's availability as a controlled end. Quit UU Remote from its taskbar entry or run `uuyc-wine --stop` to end the background session. A `uuremote:` dispatch returns right after handing off the URI.
 
 The installed Windows application remains under the per-user prefix because UU Remote includes its own updater and writes runtime data beside the application.

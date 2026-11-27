@@ -2,7 +2,7 @@
 
 pkgname=uuyc-wine
 pkgver=4.43.1.3614
-pkgrel=1
+pkgrel=2
 pkgdesc='Wine compatibility package for NetEase UU Remote (网易UU远程)'
 arch=('x86_64')
 url='https://uuyc.163.com/'
@@ -27,7 +27,7 @@ source=(
 noextract=("$pkgname-${pkgver}.exe")
 sha256sums=(
   '9a69473798ad4861b966607859adbba9c8d1b2a2a0ea9e22bba7f14969656263'
-  'b497d8d94f7bc0a5d8d6d441dad666d0b487c993c29d7ee222a7531380afefe6'
+  '2c66aef9f5bdb88f430040cfbea4eb826557fccc96cb301a5896125522c68653'
   'b24c466c330b26aa0a9ef22577a1681705e9b1d092f59a7adda602ef31623ab4'
   'c56c72c159f47b1b812943cd2095a0f64d2c4972f3c7a1a7f75e994c7b52f691'
   'e91389eac5bc82c8398518cc7fd04ffbcc76ed009fcbec9f951015340a9ca2b3'
